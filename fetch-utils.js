@@ -3,10 +3,10 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsI
 
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+
 export async function getUser() {
     return client.auth.session();
 }
-
 
 export async function checkAuth() {
     const user = await getUser();
@@ -36,6 +36,39 @@ export async function logout() {
     await client.auth.signOut();
 
     return window.location.href = '/';
+}
+export async function updateWaterfront(id) {
+    const user = await getUser();
+
+    const response = await client
+        .from('cities')
+        .update({ waterfront_id: id })
+        .match({ user_id: user.user.id })
+        .single();
+
+    return checkError(response);
+}
+export async function updateCastle(id) {
+    const user = await getUser();
+
+    const response = await client
+        .from('cities')
+        .update({ castle_id: id })
+        .match({ user_id: user.user.id })
+        .single();
+
+    return checkError(response);
+}
+export async function updateSkyline(id) {
+    const user = await getUser();
+
+    const response = await client
+        .from('cities')
+        .update({ skyline_id: id })
+        .match({ user_id: user.user.id })
+        .single();
+
+    return checkError(response);
 }
 
 function checkError({ data, error }) {
