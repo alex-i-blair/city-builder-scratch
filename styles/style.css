@@ -129,3 +129,14 @@ footer {
 .auth-container button {
     margin: 10px;
 }
+
+.city-images {
+    display: flex;
+    flex-direction: row;
+}
+
+.city-images img {
+    width: 150px;
+    height: 150px;
+    border: solid black 2px;
+}

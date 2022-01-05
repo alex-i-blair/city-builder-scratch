@@ -1,5 +1,5 @@
-const SUPABASE_URL = '';
-const SUPABASE_KEY = '';
+const SUPABASE_URL = 'https://urgffuilfqckxcanvbmm.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MTMzNzIzNCwiZXhwIjoxOTU2OTEzMjM0fQ.ZXxkHGBNaPqEZyyF7RWhQVWK3scU6-7P89-EaoUAqPQ';
 
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -16,7 +16,7 @@ export async function checkAuth() {
 
 export async function redirectIfLoggedIn() {
     if (await getUser()) {
-        location.replace('./other-page');
+        location.replace('./city');
     }
 }
 
