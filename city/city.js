@@ -1,4 +1,4 @@
-import { checkAuth, logout, updateCastle, updateSkyline, updateWaterfront } from '../fetch-utils.js'; 
+import { checkAuth, logout, updateCastle, updateSkyline, updateWaterfront, createDefaultCity, getCity, updateSlogans } from '../fetch-utils.js'; 
 
 checkAuth();
 
@@ -38,9 +38,44 @@ skylineDropdown.addEventListener('change', async() => {
     displayCity(updatedCity);
 });
 
+sloganFormEl.addEventListener('submit', async(e) => {
+    e.preventDefault();
+
+    const data = new FormData(sloganFormEl);
+    const city = await getCity();
+    console.log(city);
+    const slogan = data.get('slogan');
+    console.log(slogan);
+    city.slogans.push(slogan);
+    updateSlogans(city.slogans);
+    
+    const updatedCity = await updateSlogans(city.slogans);
+    displayCity(updatedCity);
+});
+
 function displayCity(city) {
     cityNameEl.textContent = city.name;
-    waterfrontImgEl.src = `../assets/${city.waterfront_id}waterfront`;
-    skylineImgEl.src = `../assets/${city.skyline_id}skyline`;
-    castleImgEl.src = `../assets/${city.castle_id}castle`;
+    waterfrontImgEl.src = `../assets/${city.waterfront_id}-waterfront.jpeg`;
+    skylineImgEl.src = `../assets/${city.skyline_id}-skyline.jpeg`;
+    castleImgEl.src = `../assets/${city.castle_id}-castle.jpeg`;
+    slogansEl.textContent = '';
+
+    for (let slogan of city.slogans) {
+        const sloganEl = document.createElement('p');
+        sloganEl.classList.add('slogans');
+        sloganEl.textContent = slogan;
+        slogansEl.append(sloganEl);
+    }
 }
+
+window.addEventListener('load', async() => {
+    const city = await getCity();
+    if (!city) {
+        const newCity = await createDefaultCity();
+        displayCity(newCity);
+
+    } else {
+        displayCity(city);
+    }
+
+});

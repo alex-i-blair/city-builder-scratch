@@ -1,3 +1,4 @@
+
 const SUPABASE_URL = 'https://urgffuilfqckxcanvbmm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MTMzNzIzNCwiZXhwIjoxOTU2OTEzMjM0fQ.ZXxkHGBNaPqEZyyF7RWhQVWK3scU6-7P89-EaoUAqPQ';
 
@@ -45,7 +46,7 @@ export async function updateWaterfront(id) {
         .update({ waterfront_id: id })
         .match({ user_id: user.user.id })
         .single();
-
+    // console.log(response);
     return checkError(response);
 }
 export async function updateCastle(id) {
@@ -68,6 +69,45 @@ export async function updateSkyline(id) {
         .match({ user_id: user.user.id })
         .single();
 
+    return checkError(response);
+}
+
+export async function createDefaultCity() {
+    const response = await client
+        .from('cities')
+        .insert([
+            {
+                name: 'Portland',
+                waterfront_id: 1,
+                skyline_id: 1,
+                castle_id: 1,
+                slogans: []
+            }
+        ]);
+        
+    return checkError(response);
+
+}
+
+export async function getCity() {
+    const response = await client
+        .from('cities')
+        .select()
+        .single();
+    return checkError(response);
+
+}
+
+export async function updateSlogans(id) {
+    // const user = await getUser();
+
+    const response = await client
+        .from('cities')
+        .insert({ slogans: id })
+        // .match({ user_id: user.user.id })
+        .single();
+
+        
     return checkError(response);
 }
 

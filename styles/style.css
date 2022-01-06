@@ -85,10 +85,13 @@ footer {
     box-shadow: var(--shadow);
 }
 
-  
-  @keyframes pulse {
+label {
+    display: block;
+}
+
+@keyframes pulse {
     20% {
-      transform: rotate3d(-10, -10, -10, 50deg) scale(1.2);
+        transform: rotate3d(-10, -10, -10, 50deg) scale(1.2);
     }
 
     40% {
@@ -97,13 +100,13 @@ footer {
 
     60% {
         transform: rotate3d(-10, 10, 10, 50deg) scale(1.2);
-      }
+    }
 
     80% {
         transform: rotate3d(10, 10, 10, 50deg) scale(1);
     }
 
-  }
+}
 
 #logout {
     position: fixed;
