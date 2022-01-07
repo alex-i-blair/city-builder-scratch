@@ -136,10 +136,10 @@ label {
 .city-images {
     display: flex;
     flex-direction: row;
+    width: 55%;
 }
 
 .city-images img {
-    width: 150px;
-    height: 150px;
+    width: inherit;
     border: solid black 2px;
 }

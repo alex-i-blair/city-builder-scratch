@@ -1,4 +1,4 @@
-import { checkAuth, logout, updateCastle, updateSkyline, updateWaterfront, createDefaultCity, getCity, updateSlogans } from '../fetch-utils.js'; 
+import { checkAuth, logout, updateCastle, updateSkyline, updateWaterfront, createDefaultCity, getCity, updateSlogans, updateName } from '../fetch-utils.js'; 
 
 checkAuth();
 
@@ -22,6 +22,18 @@ const skylineDropdown = document.querySelector('#skyline-dropdown');
 const nameFormEl = document.querySelector('#name-form');
 const cityNameEl = document.querySelector('#city-name');
 
+window.addEventListener('load', async() => {
+    const city = await getCity();
+    if (!city) {
+        const newCity = await createDefaultCity();
+        console.log(newCity);
+        displayCity(newCity);
+
+    } else {
+        displayCity(city);
+    }
+});
+
 waterfrontDropdown.addEventListener('change', async() => {
     const updatedCity = await updateWaterfront(waterfrontDropdown.value);
 
@@ -38,22 +50,38 @@ skylineDropdown.addEventListener('change', async() => {
     displayCity(updatedCity);
 });
 
+nameFormEl.addEventListener('submit', async(e) => {
+    e.preventDefault();
+
+    const data = new FormData(nameFormEl);
+    
+    // console.log(city);
+    const name = data.get('name');
+    // console.log(slogan);
+    
+    
+    const updatedCity = await updateName(name);
+    // console.log(updatedCity);
+    displayCity(updatedCity);
+});
+
 sloganFormEl.addEventListener('submit', async(e) => {
     e.preventDefault();
 
     const data = new FormData(sloganFormEl);
     const city = await getCity();
-    console.log(city);
+    // console.log(city);
     const slogan = data.get('slogan');
-    console.log(slogan);
+    // console.log(slogan);
     city.slogans.push(slogan);
-    updateSlogans(city.slogans);
     
     const updatedCity = await updateSlogans(city.slogans);
+    // console.log(updatedCity);
     displayCity(updatedCity);
 });
 
 function displayCity(city) {
+
     cityNameEl.textContent = city.name;
     waterfrontImgEl.src = `../assets/${city.waterfront_id}-waterfront.jpeg`;
     skylineImgEl.src = `../assets/${city.skyline_id}-skyline.jpeg`;
@@ -61,21 +89,10 @@ function displayCity(city) {
     slogansEl.textContent = '';
 
     for (let slogan of city.slogans) {
+        console.log(city.slogans);
         const sloganEl = document.createElement('p');
         sloganEl.classList.add('slogans');
         sloganEl.textContent = slogan;
         slogansEl.append(sloganEl);
     }
 }
-
-window.addEventListener('load', async() => {
-    const city = await getCity();
-    if (!city) {
-        const newCity = await createDefaultCity();
-        displayCity(newCity);
-
-    } else {
-        displayCity(city);
-    }
-
-});
